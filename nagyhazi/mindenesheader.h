@@ -1,11 +1,14 @@
 #pragma once
 
+//#define EMAIL_SUPPORT
+
 #include "memtrace.h"
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 //#include <thread>
+#include <windows.h>
 #include <chrono>
 #include <functional>
 #include <vector> 
@@ -154,6 +157,7 @@ public:
             while (std::getline(fajl, fajlsor)) std::cout << fajlsor << "\n";
             fajl.close();
             //std::this_thread::sleep_for(std::chrono::seconds(2));
+            Sleep(2000);
         }
         system("pause >nul");
         fajlkiolvas("lasagna-recipe.txt");
@@ -469,6 +473,7 @@ public:
             vanilyen = vanuser(user);
         }
         for (int i = 0; i < 5; i++) std::cout << "\n";
+#ifdef EMAIL_SUPPORT
         std::string email = szovegbekeres("email.txt");
 
         int counter = 3;
@@ -478,14 +483,23 @@ public:
             if (counter == 0) { email = szovegbekeres("email.txt"); counter = 3; }
 
         }
+#endif
 
         std::string password = szovegbekeres("password.txt");
         std::string repass;
         while (repass != password) repass = szovegbekeres("repass.txt");
 
         std::fstream file_example("jatekos.txt", std::ofstream::out | std::ofstream::app);
-        file_example << "e-mail cím: " << email << "\nBecenév: " << user << "\nJelszo: " << password << "\nJatszott: 0\n\n";
+#ifdef EMAIL_SUPPORT
+        file_example << "e-mail cím: " << email;
+#endif
+        file_example << "\nBecenév: " << user << "\nJelszo: " << password << "\nJatszott: 0\n\n";
+
+#ifdef EMAIL_SUPPORT
         return User(email, user, password);
+#else
+        return User(user, password);
+#endif
     }
 
 
@@ -506,12 +520,18 @@ public:
 
                 std::cout << "\n \n \n \n Uhh something went wrong.. Maybe you did a typeo? \n \n \n";
                 bool nextstep = bipolar("loginparos.txt", "loginparatlan.txt");
-                if (nextstep) jelszomodositas(User(keresEmailCim("jatekos.txt", user), user, "..."));
-
+                #ifdef EMAIL_SUPPORT //todo: email helyett 
+                if (nextstep)
+                    jelszomodositas(User(keresEmailCim("jatekos.txt", user), user, "..."));
+                #endif
             }
 
         }
+#ifdef EMAIL_SUPPORT
         return User(keresEmailCim("jatekos.txt", user), user, pass);
+#else
+        return User(user, pass);
+#endif
     }
 
 
@@ -832,6 +852,7 @@ public:
                 height = std::stoi(sor.substr(sor.find(':') + 1));
             }
             else if (sor.rfind("Fields:", 0) == 0) {
+                /*
                 // Read the board
                 Mezo* tabla = new Mezo[width * height];
                 User users(keresEmailCim("jatekos.txt", user1), user1, "");
@@ -856,6 +877,8 @@ public:
                 }
                 // Create the table object and push
                 mentettek.push_back(BeolvasottTabla(tabla, macs, man, width, height));
+                */
+                //todo: email helyett
             }
         }
         return mentettek;
@@ -903,12 +926,16 @@ public:
 
     bool savechoice(User embi1, User embi2) {
 
+#ifdef EMAIL_SUPPORT
         std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n Please wait...";
         std::string code1 = mail(embi1.getmail(), "You or your partner seem to have chosen to quit the game. If you agree, your code is ");
         std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n Please wait...";
         std::string code2 = mail(embi2.getmail(), "You or your partner seem to have chosen to quit the game. If you agree, your code is ");
         std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n Please wait...";
-
+#else
+        std::string code1 = std::to_string(rand());
+        std::string code2 = std::to_string(rand());
+#endif
         std::string inputcode1;
         std::string inputcode2;
         for (int i = 0; i < 50; i++) std::cout << "\n";

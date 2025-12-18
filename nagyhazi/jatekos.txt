@@ -78,3 +78,18 @@ Becen�v: sokia
 Jelszo: strongpassword
 Jatszott: 1
 
+
+Becenév: aaa
+Jelszo: aaa
+Jatszott: 0
+
+
+Becenév: ggg
+Jelszo: ggg
+Jatszott: 0
+
+
+Becenév: hhh
+Jelszo: hhh
+Jatszott: 0
+
