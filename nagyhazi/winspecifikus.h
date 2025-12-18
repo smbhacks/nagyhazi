@@ -9,7 +9,7 @@ int arrowfind(int jelenlegi, int elsovalasz, int maxvalasz, const char* fajlnev,
     HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
     DWORD mode = 0;
     GetConsoleMode(hStdin, &mode);
-    SetConsoleMode(hStdin, mode & ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT)); // Nyers input mód
+    SetConsoleMode(hStdin, mode & ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT)); // Nyers input mÃ³d
 
     INPUT_RECORD input;
     DWORD count;
@@ -45,7 +45,7 @@ int arrowfind(int jelenlegi, int elsovalasz, int maxvalasz, const char* fajlnev,
                 
             case VK_RIGHT:
                 if (funkcio == 1) {
-                    std::cout << "megnyomták a jobb gombot";
+                    std::cout << "megnyomtÃ¡k a jobb gombot";
                     jelenlegi++;
                     for (int i = 0; i < 25; i++) std::cout << "\n";
                     fajlkiolvas("ertekelj.txt");
@@ -54,7 +54,7 @@ int arrowfind(int jelenlegi, int elsovalasz, int maxvalasz, const char* fajlnev,
             
             case VK_LEFT:
                 if (funkcio == 1) {
-                    std::cout << "megnyomták a bal gombot";
+                    std::cout << "megnyomtÃ¡k a bal gombot";
                     jelenlegi--;
                     for (int i = 0; i < 25; i++) std::cout << "\n";
                     fajlkiolvas("ertekelj.txt");

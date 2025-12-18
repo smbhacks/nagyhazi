@@ -14,8 +14,8 @@
 std::string mail(std::string cim) { 
     std::string smtpServer = "smtp.gmail.com"; // SMTP szerver
     std::string smtpPort = "587";               // Port (Gmail: 587)
-    std::string username = "szilvi.egyetemi@gmail.com"; // Saj·t email cÌmed
-    std::string password = "ecps ivbm gnum mhrq";     // App Password, nem sima jelszÛ
+    std::string username = "szilvi.egyetemi@gmail.com"; // Saj√°t email c√≠med
+    std::string password = "ecps ivbm gnum mhrq";     // App Password, nem sima jelsz√≥
 
     srand(time(0));   
     std::string key = std::to_string(rand());   
@@ -26,14 +26,14 @@ std::string mail(std::string cim) {
     body += key;
     body += " If you did not registered there, you can ignore this email.";
 
-    // PowerShell parancs ˆssze·llÌt·sa
+    // PowerShell parancs √∂ssze√°ll√≠t√°sa
     std::string command = "powershell -Command \"";
     command += "$securePassword = ConvertTo-SecureString \\\"" + password + "\\\" -AsPlainText -Force; ";
     command += "$credentials = New-Object System.Management.Automation.PSCredential (\\\"" + username + "\\\", $securePassword); ";
     command += "Send-MailMessage -From \\\"" + username + "\\\" -To \\\"" + recipient + "\\\" -Subject \\\"" + subject + "\\\" ";
     command += "-Body \\\"" + body + "\\\" -SmtpServer \\\"" + smtpServer + "\\\" -Port " + smtpPort + " -UseSsl -Credential $credentials\"";
 
-    // Debug kiÌr·s
+    // Debug ki√≠r√°s
     //std::cout << "Futtatott parancs: " << command << std::endl;
 
     int result = system(command.c_str());
@@ -42,7 +42,7 @@ std::string mail(std::string cim) {
         key = "abc";
     }
     else {
-        std::cout << "E-mail sikeresen elk¸ldve!" << std::endl;
+        std::cout << "E-mail sikeresen elk√ºldve!" << std::endl;
     }
 
     return key;
@@ -55,8 +55,8 @@ bool vanuser(const std::string keresett) {
     std::ifstream file("jatekos.txt");
     std::string sor;
     while (std::getline(file, sor)) {  
-        if (sor.rfind("BecenÈv:", 0) == 0) { // ha a sor "BecenÈv:"-vel kezdıdik
-            std::string becenev = sor.substr(9); // 8 karaktert kihagy ("BecenÈv: ")
+        if (sor.rfind("Becen√©v:", 0) == 0) { // ha a sor "Becen√©v:"-vel kezd√µdik
+            std::string becenev = sor.substr(9); // 8 karaktert kihagy ("Becen√©v: ")
             std::cout << "Az aktualisan nezett becenev " << becenev << "mig a keresett " << keresett << "!\n";
             if (becenev == keresett) { 
                 return true;
@@ -71,7 +71,7 @@ bool vanuser(const std::string keresett) {
 bool ervenyes_felhasznalo(const std::string& fajlnev, const std::string& becenev, const std::string& jelszo) {
     std::ifstream fajl(fajlnev);
     if (!fajl.is_open()) {
-        std::cerr << "Nem siker¸lt megnyitni a f·jlt!" << std::endl;
+        std::cerr << "Nem siker√ºlt megnyitni a f√°jlt!" << std::endl;
         return false;
     }
 
@@ -80,18 +80,18 @@ bool ervenyes_felhasznalo(const std::string& fajlnev, const std::string& becenev
     std::string akt_jelszo;
 
     while (std::getline(fajl, sor)) {
-        if (sor.rfind("BecenÈv:", 0) == 0) {
-            akt_becenev = sor.substr(9); // "BecenÈv: " ut·n
+        if (sor.rfind("Becen√©v:", 0) == 0) {
+            akt_becenev = sor.substr(9); // "Becen√©v: " ut√°n
         }
         else if (sor.rfind("Jelszo:", 0) == 0) {
-            akt_jelszo = sor.substr(8); // "Jelszo: " ut·n
+            akt_jelszo = sor.substr(8); // "Jelszo: " ut√°n
 
-            // Ekkor m·r van egy p·runk ó ellenırzÈs
+            // Ekkor m√°r van egy p√°runk ‚Äî ellen√µrz√©s
             if (akt_becenev == becenev && akt_jelszo == jelszo) {
                 return true;
             }
 
-            // Ellenkezı esetben tov·bb megy¸nk a kˆvetkezı blokkra
+            // Ellenkez√µ esetben tov√°bb megy√ºnk a k√∂vetkez√µ blokkra
             akt_becenev.clear();
             akt_jelszo.clear();
         }
@@ -167,7 +167,7 @@ User regisztracio() {
     while (repass != password) repass = szovegbekeres("repass.txt");
 
     std::fstream file_example("jatekos.txt", std::ofstream::out | std::ofstream::app);
-    file_example << "e-mail cÌm: " << email << "\nBecenÈv: " << user << "\nJelszo: " << password << "\nJatszott: 0\n\n";
+    file_example << "e-mail c√≠m: " << email << "\nBecen√©v: " << user << "\nJelszo: " << password << "\nJatszott: 0\n\n";
     return User(email, user, password);
 }
 

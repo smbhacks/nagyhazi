@@ -189,7 +189,7 @@ public:
     bool modositFelhasznalo(const std::string& fajlNev, const std::string& becenev, int funkcio, const std::string& ujErtek) {
         std::ifstream input(fajlNev);
         if (!input) {
-            std::cerr << "Nem siker¸lt megnyitni a f·jlt: " << fajlNev << std::endl;
+            std::cerr << "Nem siker√ºlt megnyitni a f√°jlt: " << fajlNev << std::endl;
             return false;
         }
 
@@ -205,7 +205,7 @@ public:
         bool modositott = false;
 
         while (std::getline(ss, sor)) {
-            if (sor.find("e-mail cÌm:") == 0) {
+            if (sor.find("e-mail c√≠m:") == 0) {
                 std::string emailSor = sor;
                 std::string becenevSor, jelszoSor, jatszottSor;
 
@@ -213,16 +213,16 @@ public:
                 std::getline(ss, jelszoSor);
                 std::getline(ss, jatszottSor);
 
-                std::string aktBecenev = becenevSor.substr(strlen("BecenÈv: "));
+                std::string aktBecenev = becenevSor.substr(strlen("Becen√©v: "));
                 if (aktBecenev == becenev) {
-                    // MÛdosÌt·s itt tˆrtÈnik
+                    // M√≥dos√≠t√°s itt t√∂rt√©nik
                     switch (funkcio) {
                     case -1: return true;
                     case 1:
                         jelszoSor = "Jelszo: " + ujErtek;
                         break;
                     case 2:
-                        emailSor = "e-mail cÌm: " + ujErtek;
+                        emailSor = "e-mail c√≠m: " + ujErtek;
                         break;
                     case 3: {
                         std::string jatszottStr = jatszottSor.substr(strlen("Jatszott: "));
@@ -232,32 +232,32 @@ public:
                         break;
                     }
                     default:
-                        std::cerr << "Ismeretlen funkciÛ: " << funkcio << std::endl;
+                        std::cerr << "Ismeretlen funkci√≥: " << funkcio << std::endl;
                         return false;
                     }
 
                     modositott = true;
                 }
 
-                // Õrjuk vissza a blokkokat
+                // √çrjuk vissza a blokkokat
                 ujTartalom << emailSor << '\n'
                     << becenevSor << '\n'
                     << jelszoSor << '\n'
                     << jatszottSor << '\n';
             }
             else {
-                ujTartalom << sor << '\n'; // ritk·n, de lehet ¸res sorok is
+                ujTartalom << sor << '\n'; // ritk√°n, de lehet √ºres sorok is
             }
         }
 
         if (!modositott) {
-            std::cerr << "Nem tal·ltam a becenevet: " << becenev << std::endl;
+            std::cerr << "Nem tal√°ltam a becenevet: " << becenev << std::endl;
             return false;
         }
 
         std::ofstream output(fajlNev);
         if (!output) {
-            std::cerr << "Nem siker¸lt Ìrni a f·jlba." << std::endl;
+            std::cerr << "Nem siker√ºlt √≠rni a f√°jlba." << std::endl;
             return false;
         }
 
@@ -274,24 +274,24 @@ public:
 
         std::string sor;
         while (std::getline(input, sor)) {
-            if (sor.find("e-mail cÌm:") == 0) {
-                std::string email = sor.substr(strlen("e-mail cÌm: "));
+            if (sor.find("e-mail c√≠m:") == 0) {
+                std::string email = sor.substr(strlen("e-mail c√≠m: "));
                 std::string becenevSor;
                 std::getline(input, becenevSor);
 
-                std::string aktBecenev = becenevSor.substr(strlen("BecenÈv: "));
+                std::string aktBecenev = becenevSor.substr(strlen("Becen√©v: "));
                 if (aktBecenev == becenev) {
                     return email;
                 }
 
-                // Ha nem egyezik, ·tugorjuk a maradÈk kÈt sort (Jelszo, Jatszott)
+                // Ha nem egyezik, √°tugorjuk a marad√©k k√©t sort (Jelszo, Jatszott)
                 std::string tmp;
                 std::getline(input, tmp);
                 std::getline(input, tmp);
             }
         }
 
-        std::cerr << "Nem tal·ltam a becenevet: " << becenev << std::endl;
+        std::cerr << "Nem tal√°ltam a becenevet: " << becenev << std::endl;
         return "";
     }
 
@@ -301,8 +301,8 @@ public:
     std::string mail(std::string cim, std::string body) {
         std::string smtpServer = "smtp.gmail.com"; // SMTP szerver
         std::string smtpPort = "587";               // Port (Gmail: 587)
-        std::string username = "szilvi.egyetemi@gmail.com"; // Saj·t email cÌmed
-        std::string password = "ecps ivbm gnum mhrq";     // App Password, nem sima jelszÛ
+        std::string username = "szilvi.egyetemi@gmail.com"; // Saj√°t email c√≠med
+        std::string password = "ecps ivbm gnum mhrq";     // App Password, nem sima jelsz√≥
 
         srand(static_cast<unsigned int>(time(0)));
         std::string key = std::to_string(rand());
@@ -312,14 +312,14 @@ public:
         body += key;
         body += " If you did not registered there, you can ignore this email.";
 
-        // PowerShell parancs ˆssze·llÌt·sa
+        // PowerShell parancs √∂ssze√°ll√≠t√°sa
         std::string command = "powershell -Command \"";
         command += "$securePassword = ConvertTo-SecureString \\\"" + password + "\\\" -AsPlainText -Force; ";
         command += "$credentials = New-Object System.Management.Automation.PSCredential (\\\"" + username + "\\\", $securePassword); ";
         command += "Send-MailMessage -From \\\"" + username + "\\\" -To \\\"" + recipient + "\\\" -Subject \\\"" + subject + "\\\" ";
         command += "-Body \\\"" + body + "\\\" -SmtpServer \\\"" + smtpServer + "\\\" -Port " + smtpPort + " -UseSsl -Credential $credentials\"";
 
-        //Debug kiÌr·s
+        //Debug ki√≠r√°s
         std::cout << "Futtatott parancs: " << command << std::endl;
 
         //int result = system(command.c_str());
@@ -334,7 +334,7 @@ public:
             key = "abc";
         }
         else {
-            std::cout << "E-mail sikeresen elk¸ldve!" << std::endl;
+            std::cout << "E-mail sikeresen elk√ºldve!" << std::endl;
         }
 
         return key;
@@ -347,8 +347,8 @@ public:
         std::ifstream file("jatekos.txt");
         std::string sor;
         while (std::getline(file, sor)) {
-            if (sor.rfind("BecenÈv:", 0) == 0) { // ha a sor "BecenÈv:"-vel kezdıdik
-                std::string becenev = sor.substr(9); // 8 karaktert kihagy ("BecenÈv: ")
+            if (sor.rfind("Becen√©v:", 0) == 0) { // ha a sor "Becen√©v:"-vel kezd√µdik
+                std::string becenev = sor.substr(9); // 8 karaktert kihagy ("Becen√©v: ")
                 //std::cout << "Az aktualisan nezett becenev " << becenev << "mig a keresett " << keresett << "!\n";
                 if (becenev == keresett) {
                     return true;
@@ -368,18 +368,18 @@ public:
         std::string akt_jelszo;
 
         while (std::getline(fajl, sor)) {
-            if (sor.rfind("BecenÈv:", 0) == 0) {
-                akt_becenev = sor.substr(9); // "BecenÈv: " ut·n
+            if (sor.rfind("Becen√©v:", 0) == 0) {
+                akt_becenev = sor.substr(9); // "Becen√©v: " ut√°n
             }
             else if (sor.rfind("Jelszo:", 0) == 0) {
-                akt_jelszo = sor.substr(8); // "Jelszo: " ut·n
+                akt_jelszo = sor.substr(8); // "Jelszo: " ut√°n
 
-                // Ekkor m·r van egy p·runk ó ellenırzÈs
+                // Ekkor m√°r van egy p√°runk ‚Äî ellen√µrz√©s
                 if (akt_becenev == becenev && akt_jelszo == jelszo) {
                     return true;
                 }
 
-                // Ellenkezı esetben tov·bb megy¸nk a kˆvetkezı blokkra
+                // Ellenkez√µ esetben tov√°bb megy√ºnk a k√∂vetkez√µ blokkra
                 akt_becenev.clear();
                 akt_jelszo.clear();
             }
@@ -484,7 +484,7 @@ public:
         while (repass != password) repass = szovegbekeres("repass.txt");
 
         std::fstream file_example("jatekos.txt", std::ofstream::out | std::ofstream::app);
-        file_example << "e-mail cÌm: " << email << "\nBecenÈv: " << user << "\nJelszo: " << password << "\nJatszott: 0\n\n";
+        file_example << "e-mail c√≠m: " << email << "\nBecen√©v: " << user << "\nJelszo: " << password << "\nJatszott: 0\n\n";
         return User(email, user, password);
     }
 
